@@ -1,0 +1,34 @@
+,ID,trait,,
+2,4,Stem specific density (SSD),,干比密度(SSD)
+47,6,Root rooting depth,,根生根深度
+3,11,Leaf area per leaf dry mass,,叶面积/叶干质量
+4,13,Leaf carbon (C) content per leaf dry mass,,每叶干质量的叶碳含量
+5,14,Leaf nitrogen (N) content per leaf dry mass,,叶片干质量含氮量
+6,15,Leaf phosphorus (P) content per leaf dry mass,,叶片磷(P)含量
+53,18,Plant height,,株高
+7,21,Stem diameter,,阀杆直径
+8,26,Seed dry mass,,种子干质量
+9,27,Seed length,,种子长度
+10,46,Leaf thickness,,叶厚度
+11,47,Leaf dry mass per leaf fresh mass (LDMC),,叶干质量/叶鲜质量(LDMC)
+12,50,Leaf nitrogen (N) content per leaf area,,叶面氮含量(N)
+13,55,Leaf dry mass (single leaf),,叶片干质量(单叶)
+14,78,Leaf nitrogen (N) isotope signature (delta 15N),,叶片氮同位素特征(δ 15N)
+15,95,Seed germination rate (germination efficiency),,种子发芽率(发芽率)
+52,138,Seed number per reproducton unit,,每繁殖单位的种子数
+16,144,Leaf length,,叶片长度
+17,145,Leaf width,,叶宽度
+18,146,Leaf carbon/nitrogen (C/N) ratio,,叶片碳氮比(C/N)
+19,163,Leaf fresh mass,,叶片鲜块
+20,169,Stem conduit density (vessels and tracheids),,茎管密度(血管和管胞)
+22,223,Species genotype: chromosome number,,种基因型:染色体数目
+23,224,Species genotype: chromosome cDNA content,,种基因型:染色体cDNA含量
+24,237,Dispersal unit length,,分散单位长度
+25,281,"Stem conduit diameter (vessels, tracheids)",,茎管直径(血管、管胞)
+26,282,stem conduit (vessel and tracheids) element length,,茎管(导管和管胞)单元长度
+27,289,Wood fiber lengths,,木纤维长度
+49,1080,"Root length per root dry mass (specific root length, SRL)",,每根干质量的根长(单位根长，SRL)
+40,3112,"Leaf area (in case of compound leaves: leaf, undefined if petiole in- or excluded)",,叶面积(在复叶情况下:叶，如果叶柄在或不包含则未定义)
+41,3113,"Leaf area (in case of compound leaves: leaflet, undefined if petiole is in- or excluded)",,叶面积(在复叶情况下:小叶，如果叶柄在或不在，则未定义)
+42,3114,"Leaf area (in case of compound leaves undefined if leaf or leaflet, undefined if petiole is in- or e",,叶面积(在复叶的情况下，叶或小叶未定义，叶柄在或e未定义
+46,3120,Leaf water content per leaf dry mass,,叶片含水量每叶干质量
