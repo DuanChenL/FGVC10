@@ -7,7 +7,7 @@ for pth in package_paths:
     sys.path.append(pth)
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3,4,5,6,7"
+os.environ["CUDA_VISIBLE_DEVICES"] = "4,5,6,7"
 import config
 import json
 import torch
@@ -71,11 +71,11 @@ CFG = {
     'warmup_lr_factor': 0.01,   # warmup_lr = lr * warmup_lr_factor
     'epochs': 24,
 
-    'train_bs': 64,
+    'train_bs': 32,
     'valid_bs': 128,
 
-    'lr': 5e-5, # large 7.5e-5  base 1e-5 / 2
-    'min_lr': 1e-6 / 7 / 2, # large 1e-6 / 7 / 2  base 1e-5 / 7 / 2
+    'lr': 7.5e-5 /2, # large 7.5e-5  base 1e-5 / 2
+    'min_lr': 1e-6 / 7 / 2/2, # large 1e-6 / 7 / 2  base 1e-5 / 7 / 2
 
     'differLR': False,
     'bacbone_lr_factor': 0.1,    # if 'differLR' is True, the lr of backbone will be lr * bacbone_lr_factor
@@ -91,7 +91,7 @@ CFG = {
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
-handler = logging.FileHandler(f"logs/meta_{CFG['model_arch']}_train_cls_dropoutBeforeConcat_0.5.log")
+handler = logging.FileHandler(f"logs/meta_{CFG['model_arch']}_train_cls_dropoutBeforeConcat_0.67.log")
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
@@ -113,7 +113,7 @@ def get_img(path):
     im_rgb = im_bgr[:, :, ::-1]
     return im_rgb
 
-
+import pickle as pkl
 class FGVCDataset(Dataset):
     def __init__(self, setname='train',
                  transforms=None,
@@ -245,11 +245,11 @@ def prepare_dataloader():
 class MetaModel(nn.Module):
     def __init__(self, model_arch, feature_dim, meta_feature_dim, num_classes) -> None:
         super().__init__()
-        self.backbone = timm.create_model(model_arch, num_classes = 0, pretrained=False)
+        self.backbone = timm.create_model(model_arch, num_classes=0, pretrained=True)
         self.midd = nn.Linear(feature_dim+meta_feature_dim, 4096)
         self.head = nn.Linear(4096, num_classes)
         self.metaBN = nn.BatchNorm1d(meta_feature_dim)
-        self.dropout = nn.Dropout(p=0.5)
+        self.dropout = nn.Dropout(p=0.67)
         
     def forward(self, x, meta_feature):
         res = self.backbone(x)
@@ -513,11 +513,11 @@ if __name__ == '__main__':
     
     model = MetaModel(CFG['model_arch'], feature_dim, meta_feature_dim, CFG['class_num'])
 
-    
+    # load pretrain model
     # model = timm.create_model(CFG['model_arch'], num_classes=CFG['class_num'], pretrained=True)
-    model_state_dict = model.state_dict()
+    # model_state_dict = model.state_dict()
     # model = convnextv2_base(num_classes=CFG['num_classes'])
-    state_dict = torch.load(CFG['checkpoints'], map_location=torch.device('cpu'))
+    # state_dict = torch.load(CFG['checkpoints'], map_location=torch.device('cpu'))
     from collections import OrderedDict
     # print(state_dict)
     
@@ -527,8 +527,8 @@ if __name__ == '__main__':
     
     # large mode
     # state_dict = {'backbone.'+k[7:]:v for k,v in state_dict.items()}
-    state_dict = {'lyy.'+k if k.startswith('module.head') else 'backbone.'+k[7:]:v for k,v in state_dict.items()}
-    model.load_state_dict(state_dict,strict=False)
+    # state_dict = {'lyy.'+k if k.startswith('module.head') else 'backbone.'+k[7:]:v for k,v in state_dict.items()}
+    # model.load_state_dict(state_dict,strict=False)
         
     model.to(device)
 
@@ -579,7 +579,7 @@ if __name__ == '__main__':
         with torch.no_grad():
             # temp_acc = valid_one_epoch(epoch, model, loss_fn, val_loader, device, scheduler=None, schd_loss_update=False)
             if (temp_train_acc > beat_train_acc):
-                torch.save(model.state_dict(), './checkpoints/imgsize_{}_{}_mixtype_{}_mixprob_{}_seed_{}_ls_{}_epochs_{}_diffLR_{}_meta__dropoutBeforeConcat_0.5.pth'.format(
+                torch.save(model.state_dict(), './checkpoints/imgsize_{}_{}_mixtype_{}_mixprob_{}_seed_{}_ls_{}_epochs_{}_diffLR_{}_meta__dropoutBeforeConcat_0.67.pth'.format(
                                                 CFG['img_size'],
                                                 CFG['model_arch'],
                                                 CFG['mix_type'],
